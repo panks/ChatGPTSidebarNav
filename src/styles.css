@@ -94,15 +94,18 @@
   background: rgba(59, 130, 246, 0.2);
 }
 
+/* Saturated yellow highlight so user prompts pop in dark mode, with max contrast text. */
 .chatgpt-question-highlight {
-  background: rgba(147, 197, 253, 0.35) !important;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+  background: rgba(250, 204, 21, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(202, 138, 4, 0.9);
+  color: #000 !important;
 }
 
 body.chatgpt-question-sidebar-active [data-message-author-role="user"] .user-message-bubble-color,
 body.chatgpt-question-sidebar-active [data-message-author-role="user"].user-message-bubble-color {
-  background: rgba(147, 197, 253, 0.35) !important;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+  background: rgba(250, 204, 21, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(202, 138, 4, 0.9);
+  color: #000 !important;
 }
 
 .chatgpt-question-flash {
