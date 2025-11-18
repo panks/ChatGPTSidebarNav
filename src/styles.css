@@ -99,6 +99,12 @@
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
 }
 
+body.chatgpt-question-sidebar-active [data-message-author-role="user"] .user-message-bubble-color,
+body.chatgpt-question-sidebar-active [data-message-author-role="user"].user-message-bubble-color {
+  background: rgba(147, 197, 253, 0.35) !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+}
+
 .chatgpt-question-flash {
   animation: question-flash 1.5s ease-in-out;
 }
