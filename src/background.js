@@ -1,4 +1,7 @@
-const CHAT_HOST = 'chatgpt.com';
+const SUPPORTED_HOSTS = [
+  { hostname: 'chatgpt.com', label: 'ChatGPT' },
+  { hostname: 'claude.ai', label: 'Claude' }
+];
 const TOGGLE_CMD = 'CHATGPT_HELPER_TOGGLE';
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -10,7 +13,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     return;
   }
 
-  if (!tab.url.includes(CHAT_HOST)) {
+  if (!isSupportedUrl(tab.url)) {
     chrome.action.setBadgeText({ text: '!', tabId: tab.id });
     setTimeout(() => chrome.action.setBadgeText({ text: '', tabId: tab.id }), 2000);
     return;
@@ -37,4 +40,13 @@ chrome.action.onClicked.addListener(async (tab) => {
 
 function updateBadge(tabId, isActive) {
   chrome.action.setBadgeText({ text: isActive ? 'ON' : '', tabId });
+}
+
+function isSupportedUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return SUPPORTED_HOSTS.some(({ hostname }) => parsed.hostname.endsWith(hostname));
+  } catch (error) {
+    return false;
+  }
 }

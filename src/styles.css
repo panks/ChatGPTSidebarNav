@@ -125,6 +125,13 @@ body.chatgpt-question-sidebar-active [data-message-author-role="user"].user-mess
   color: #000 !important;
 }
 
+body.chatgpt-question-sidebar-active .group:has([data-testid="user-message"]),
+body.chatgpt-question-sidebar-active [data-testid="user-message"] {
+  background: rgba(250, 204, 21, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(202, 138, 4, 0.9);
+  color: #000 !important;
+}
+
 .chatgpt-question-flash {
   animation: question-flash 1.5s ease-in-out;
 }

@@ -8,7 +8,8 @@
     "scripting"
   ],
   "host_permissions": [
-    "https://chatgpt.com/*"
+    "https://chatgpt.com/*",
+    "https://claude.ai/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -18,7 +19,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://chatgpt.com/*"],
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://claude.ai/*"
+      ],
       "js": ["contentScript.js"],
       "css": ["styles.css"],
       "run_at": "document_idle"

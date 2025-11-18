@@ -15,5 +15,6 @@
    - The panel slides out of view while remaining ready to expand.
 7. Click the toolbar icon again:
    - The sidebar disappears and highlights are removed.
+8. Repeat steps 2–7 on `https://claude.ai` to confirm the same experience (highlights should wrap Claude’s user bubbles and the question list should update as you type).
 
 Record any deviations or console errors for follow-up.

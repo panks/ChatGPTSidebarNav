@@ -13,6 +13,29 @@ const HIGHLIGHT_CLASS = 'chatgpt-question-highlight';
 const FLASH_CLASS = 'chatgpt-question-flash';
 const BODY_ACTIVE_CLASS = 'chatgpt-question-sidebar-active';
 
+const PLATFORM_CONFIGS = [
+  {
+    id: 'chatgpt',
+    hostPattern: /(^|\.)chatgpt\.com$/,
+    userMessageSelector: '[data-message-author-role="user"]',
+    getBubble: (node) => node.querySelector('.user-message-bubble-color') ?? node,
+    getMessageId: (node) => node.getAttribute('data-message-id'),
+    getScrollTarget: (node) => node.closest('article') ?? node,
+    describe: 'ChatGPT web client'
+  },
+  {
+    id: 'claude',
+    hostPattern: /(^|\.)claude\.ai$/,
+    userMessageSelector: '[data-testid="user-message"]',
+    getBubble: (node) => node.closest('.group') ?? node,
+    getMessageId: (node) => node.closest('[data-message-id]')?.getAttribute('data-message-id'),
+    getScrollTarget: (node) => node.closest('.group') ?? node,
+    describe: 'Claude web client'
+  }
+];
+
+const ACTIVE_PLATFORM = PLATFORM_CONFIGS.find((config) => config.hostPattern.test(window.location.hostname));
+
 const sidebarState = {
   active: false,
   sidebarEl: null,
@@ -21,12 +44,22 @@ const sidebarState = {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === TOGGLE_CMD) {
+    if (!ACTIVE_PLATFORM) {
+      console.warn('ChatGPT Sidebar Navigator: unsupported host, ignoring toggle.');
+      sendResponse({ active: false, unsupported: true });
+      return;
+    }
+
     sidebarState.active ? deactivateSidebar() : activateSidebar();
     sendResponse({ active: sidebarState.active });
   }
 });
 
 function activateSidebar() {
+  if (!document?.body) {
+    return;
+  }
+
   sidebarState.active = true;
   ensureSidebar();
   highlightExistingQuestions();
@@ -122,7 +155,7 @@ function refreshSidebarList() {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'question-link';
-    button.dataset.messageId = getMessageId(message) ?? `question-${index}`;
+    button.dataset.messageId = getMessageId(message, index) ?? `question-${index}`;
     button.textContent = `${index + 1}. ${questionText}`;
 
     button.addEventListener('click', () => {
@@ -140,8 +173,8 @@ function highlightExistingQuestions() {
 }
 
 function highlightMessage(message) {
-  const bubble = message.querySelector('.user-message-bubble-color') || message;
-  bubble.classList.add(HIGHLIGHT_CLASS);
+  const bubble = getBubbleForMessage(message);
+  bubble?.classList.add(HIGHLIGHT_CLASS);
 }
 
 function removeHighlights() {
@@ -176,13 +209,17 @@ function disconnectObserver() {
 }
 
 function handlePotentialMessage(node) {
-  if (node.matches?.('[data-message-author-role="user"]')) {
+  if (!ACTIVE_PLATFORM) {
+    return;
+  }
+
+  if (node.matches?.(ACTIVE_PLATFORM.userMessageSelector)) {
     highlightMessage(node);
     refreshSidebarList();
     return;
   }
 
-  const nestedCandidate = node.querySelector?.('[data-message-author-role="user"]');
+  const nestedCandidate = node.querySelector?.(ACTIVE_PLATFORM.userMessageSelector);
   if (nestedCandidate) {
     highlightMessage(nestedCandidate);
     refreshSidebarList();
@@ -190,7 +227,10 @@ function handlePotentialMessage(node) {
 }
 
 function getUserMessages() {
-  return Array.from(document.querySelectorAll('[data-message-author-role="user"]'));
+  if (!ACTIVE_PLATFORM) {
+    return [];
+  }
+  return Array.from(document.querySelectorAll(ACTIVE_PLATFORM.userMessageSelector));
 }
 
 function extractQuestionText(message) {
@@ -203,16 +243,20 @@ function extractQuestionText(message) {
   return sanitized.length > 140 ? `${sanitized.slice(0, 137)}…` : sanitized;
 }
 
-function getMessageId(message) {
-  return message.getAttribute('data-message-id');
+function getMessageId(message, index) {
+  return ACTIVE_PLATFORM?.getMessageId?.(message, index) ?? message.getAttribute?.('data-message-id');
 }
 
 function scrollToMessage(message) {
-  message.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const target = ACTIVE_PLATFORM?.getScrollTarget?.(message) ?? message;
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function flashMessage(message) {
-  const bubble = message.querySelector('.user-message-bubble-color') || message;
+  const bubble = getBubbleForMessage(message);
+  if (!bubble) {
+    return;
+  }
   bubble.classList.add(FLASH_CLASS);
   setTimeout(() => bubble.classList.remove(FLASH_CLASS), 1600);
 }
@@ -220,4 +264,17 @@ function flashMessage(message) {
 function removeSidebar() {
   sidebarState.sidebarEl?.remove();
   sidebarState.sidebarEl = null;
+}
+
+function getBubbleForMessage(message) {
+  if (!message) {
+    return null;
+  }
+
+  const resolved = ACTIVE_PLATFORM?.getBubble?.(message);
+  if (resolved) {
+    return resolved;
+  }
+
+  return message.querySelector?.('.user-message-bubble-color') || message;
 }
