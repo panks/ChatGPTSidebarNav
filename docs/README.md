@@ -27,6 +27,8 @@ config/   → Reserved for future configuration (currently empty)
 
 ## Usage
 
+![Sidebar Nav Screenshot](../images/screenshot.png)
+
 1. Navigate to `https://chatgpt.com` or `https://claude.ai` and open any conversation.
 2. Click the extension’s toolbar icon once. This injects the sidebar and highlights your existing questions.
 3. Click any entry in the sidebar to jump back to that turn; click **Collapse** to hide the panel until you need it again.
