@@ -34,11 +34,6 @@ config/   → Reserved for future configuration (currently empty)
 3. Click any entry in the sidebar to jump back to that turn; click **Collapse** to hide the panel until you need it again.
 4. Click the toolbar icon a second time to remove the sidebar and all highlights.
 
-## Development notes
-
-- No build step is required; every script listed in the manifest ships as-is.
-- Keep files short (<300 lines) and well-commented. Additional functionality should be split into helper modules before exceeding that limit.
-
 ## Future ideas
 
 - Persist collapsed/expanded state per session.
