@@ -1,6 +1,8 @@
 const SUPPORTED_HOSTS = [
   { hostname: 'chatgpt.com', label: 'ChatGPT' },
-  { hostname: 'claude.ai', label: 'Claude' }
+  { hostname: 'claude.ai', label: 'Claude' },
+  { hostname: 'aistudio.google.com', label: 'Google AI Studio' },
+  { hostname: 'gemini.google.com', label: 'Google Gemini' }
 ];
 const TOGGLE_CMD = 'CHATGPT_HELPER_TOGGLE';
 

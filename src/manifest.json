@@ -2,14 +2,16 @@
   "manifest_version": 3,
   "name": "ChatGPT Sidebar Navigator",
   "description": "Highlights your ChatGPT questions and provides a collapsible question navigator.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "permissions": [
     "activeTab",
     "scripting"
   ],
   "host_permissions": [
     "https://chatgpt.com/*",
-    "https://claude.ai/*"
+    "https://claude.ai/*",
+    "https://aistudio.google.com/*",
+    "https://gemini.google.com/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -21,7 +23,9 @@
     {
       "matches": [
         "https://chatgpt.com/*",
-        "https://claude.ai/*"
+        "https://claude.ai/*",
+        "https://aistudio.google.com/*",
+        "https://gemini.google.com/*"
       ],
       "js": ["contentScript.js"],
       "css": ["styles.css"],

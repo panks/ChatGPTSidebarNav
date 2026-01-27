@@ -132,6 +132,40 @@ body.chatgpt-question-sidebar-active [data-testid="user-message"] {
   color: #000 !important;
 }
 
+/* Google AI Studio user message highlighting.
+ * Target the turn-content element within user prompt containers.
+ * This provides a clear visual indicator for user questions. */
+body.chatgpt-question-sidebar-active [data-turn-role="User"] .turn-content {
+  background: rgba(250, 204, 21, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(202, 138, 4, 0.9);
+  border-radius: 8px;
+  padding: 8px !important;
+}
+
+/* Ensure text remains readable on highlighted background in Google AI Studio. */
+body.chatgpt-question-sidebar-active [data-turn-role="User"] .turn-content,
+body.chatgpt-question-sidebar-active [data-turn-role="User"] .turn-content * {
+  color: #000 !important;
+}
+
+/* Style the author label for better visibility when highlighted. */
+body.chatgpt-question-sidebar-active [data-turn-role="User"] .author-label {
+  color: #000 !important;
+  font-weight: 600;
+}
+
+/* Gemini user message highlighting. */
+body.chatgpt-question-sidebar-active user-query .user-query-bubble-with-background {
+  background: rgba(250, 204, 21, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(202, 138, 4, 0.9);
+  color: #000 !important;
+}
+
+/* Ensure text remains readable on highlighted background in Gemini. */
+body.chatgpt-question-sidebar-active user-query .user-query-bubble-with-background * {
+  color: #000 !important;
+}
+
 .chatgpt-question-flash {
   animation: question-flash 1.5s ease-in-out;
 }
