@@ -7,6 +7,7 @@ A lightweight Chrome extension that makes long AI chat conversations easier to s
 - **ChatGPT** (chatgpt.com)
 - **Claude** (claude.ai)
 - **Google AI Studio** (aistudio.google.com)
+- **Gemini** (gemini.google.com)
 
 ## Features
 
@@ -35,7 +36,7 @@ config/   → Reserved for future configuration (currently empty)
 
 ![Sidebar Nav Screenshot](../images/screenshot.png)
 
-1. Navigate to any supported platform (`https://chatgpt.com`, `https://claude.ai`, or `https://aistudio.google.com`) and open a conversation.
+1. Navigate to any supported platform (`https://chatgpt.com`, `https://claude.ai`, `https://aistudio.google.com`, or `https://gemini.google.com`) and open a conversation.
 2. Click the extension's toolbar icon once. This injects the sidebar and highlights your existing questions.
 3. Click any entry in the sidebar to jump back to that turn; click **Collapse** to hide the panel until you need it again.
 4. Click the toolbar icon a second time to remove the sidebar and all highlights.
