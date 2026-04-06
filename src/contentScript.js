@@ -108,6 +108,18 @@ const PLATFORM_CONFIGS = [
     getMessageId: (node) => node.closest('.conversation-container')?.id,
     // Scroll to the container.
     getScrollTarget: (node) => node.closest('.conversation-container') ?? node,
+    // Custom text extraction to exclude the "You said" accessibility label
+    // (.cdk-visually-hidden) that Gemini renders inside the user-query element.
+    extractText: (node) => {
+      // The actual message text lives in .query-text-line elements.
+      const lines = node.querySelectorAll('.query-text-line');
+      if (lines.length) {
+        return Array.from(lines).map((l) => l.textContent?.trim()).filter(Boolean).join(' ');
+      }
+      // Fallback: strip the "You said" prefix from raw textContent.
+      const raw = node.textContent?.trim() ?? '';
+      return raw.replace(/^You said\s*/i, '');
+    },
     describe: 'Google Gemini web client'
   }
 ];
